@@ -25,15 +25,20 @@ export const WelcomeWindow = () => {
     <GridContainer>
       {!show && (
         <Grid>
-          <Typography className="greeting_welcome">
-            Welcome to the Countries Info App!
+          <Typography className="greeting_welcome" variant="h2">
+            Countriezzz
+          </Typography>
+          <Typography className="call_to_action" variant="body1">
+            What's the country you want to explore?
           </Typography>
         </Grid>
       )}
       {show && (
         <ResultContainer>
           <Grid>
-            <Typography>{data[0].name.common}</Typography>
+            <Typography variant="h4" className="country_name">
+              {data[0].name.common}
+            </Typography>
             <img
               className="flag"
               src={data[0].flags.svg}
@@ -47,10 +52,10 @@ export const WelcomeWindow = () => {
             <Typography>Capital:{data[0].capital[0]}</Typography>
           </Grid>
           <Grid>
-            <Typography>Area:{data[0].area}square kilometers</Typography>
+            <Typography>Area:{data[0].area} sq. KM</Typography>
           </Grid>
           <Grid>
-            <Typography>Population:{data[0].population}</Typography>
+            <Typography>Population:{data[0].population} people</Typography>
           </Grid>
           <Grid>
             <Typography>Region:{data[0].region}</Typography>
