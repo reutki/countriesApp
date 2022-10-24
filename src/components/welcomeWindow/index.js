@@ -5,20 +5,27 @@ import { useState } from "react";
 import axios from "axios";
 
 export const WelcomeWindow = () => {
-  const [show, isShown] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  const [data, setData] = React.useState("");
+  const [show, isShown] = useState(false); //changes the state of the app, to show data or to get back to search
+  const [value, setValue] = useState(""); //changes the state of the button -> disabled/enabled
+  const [data, setData] = useState(""); //changes the state of data, it is passing the data into the app
+  const [errors, setErrors] = useState(false); //changes the state of the errors, if it is an error it makes the input to be red
 
   function handleChange(e) {
     setValue(e.target.value);
   }
+  const handleClick = (e) => {
+    isShown(false);
+    setErrors(false);
+  };
   const getData = async () => {
-    const { data } = await axios.get(
-      `https://restcountries.com/v3.1/name/${value}`
-    );
-    setData(data);
+    const { data } = await axios
+      .get(`https://restcountries.com/v3.1/name/${value}`)
+      .catch((e) => {
+        setErrors((current) => !current);
+      });
+
     isShown((current) => !current);
-    console.log(data[0]);
+    setData(data);
   };
 
   return (
@@ -64,14 +71,24 @@ export const WelcomeWindow = () => {
       )}
       <Grid>
         <SearchSection>
-          <TextField
-            className="search_input"
-            variant="outlined"
-            onChange={handleChange}
-          />
-          <Button variant="contained" disabled={!value} onClick={getData}>
-            Explore!
-          </Button>
+          {!show && (
+            <TextField
+              className="search_input"
+              variant="outlined"
+              onChange={handleChange}
+              error={errors}
+            />
+          )}
+          {!show && (
+            <Button variant="contained" disabled={!value} onClick={getData}>
+              Explore!
+            </Button>
+          )}
+          {show && (
+            <Button variant="contained" disabled={!value} onClick={handleClick}>
+              Done
+            </Button>
+          )}
         </SearchSection>
       </Grid>
     </GridContainer>
